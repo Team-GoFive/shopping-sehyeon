@@ -24,6 +24,14 @@ public class UserService {
 		repository.save(user);
 	}
 
+	public List<User> getUsers() {
+		return repository.selectAll();
+	}
+
+	public User getUser(String loginId) {
+		return repository.select(loginId);
+	}
+
 	public void update(String loginId, UserUpdateRequest request) {
 		// loginId에 해당하는 user 조회
 		User user = repository.select(loginId);
@@ -40,13 +48,5 @@ public class UserService {
 	public void delete(String loginId) {
 		// loginId에 해당하는 user 삭제
 		repository.delete(loginId);
-	}
-
-	public List<User> getUsers() {
-		return repository.selectAll();
-	}
-
-	public User getUser(String loginId) {
-		return repository.select(loginId);
 	}
 }
