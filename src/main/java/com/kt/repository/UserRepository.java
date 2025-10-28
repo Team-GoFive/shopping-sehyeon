@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.kt.domain.User;
+import com.kt.dto.UserUpdateRequest;
 
 import lombok.RequiredArgsConstructor;
 
@@ -31,9 +32,9 @@ public class UserRepository {
 		return jdbcTemplate.query(sql, userMapper);
 	}
 
-	public void update(String loginId, User user){
+	public void update(String loginId, UserUpdateRequest user){
 		String sql = "UPDATE member SET password = ?, name = ?, birthday = ? WHERE loginId = ?";
-		jdbcTemplate.update(sql, user.getPassword(), user.getName(), user.getBirthday(), loginId);
+		jdbcTemplate.update(sql, user.password(), user.name(), user.birthday(), loginId);
 	}
 
 	public void delete(String loginId) {
