@@ -1,5 +1,7 @@
 package com.kt.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.kt.domain.User;
@@ -38,5 +40,13 @@ public class UserService {
 	public void delete(String loginId) {
 		// loginId에 해당하는 user 삭제
 		repository.delete(loginId);
+	}
+
+	public List<User> getUsers() {
+		return repository.selectAll();
+	}
+
+	public User getUser(String loginId) {
+		return repository.select(loginId);
 	}
 }

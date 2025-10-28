@@ -1,7 +1,10 @@
 package com.kt.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kt.domain.User;
 import com.kt.dto.UserCreateRequest;
 import com.kt.dto.UserUpdateRequest;
 import com.kt.service.UserService;
@@ -44,5 +48,18 @@ public class UserController {
 	@ResponseStatus(HttpStatus.OK)
 	public void delete(@RequestParam String loginId){
 		userService.delete(loginId);
+	}
+
+	@GetMapping
+	@ResponseStatus(HttpStatus.OK)
+	public List<User> getUsers(){
+		return userService.getUsers();
+	}
+
+	// user 조회(loginId)
+	@GetMapping("/{loginId}")
+	@ResponseStatus(HttpStatus.OK)
+	public User getUser(@PathVariable String loginId){
+		return userService.getUser(loginId);
 	}
 }

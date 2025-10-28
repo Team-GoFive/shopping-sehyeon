@@ -1,5 +1,7 @@
 package com.kt.repository;
 
+import java.util.List;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -46,5 +48,10 @@ public class UserRepository {
 	public void delete(String loginId) {
 		String sql = "DELETE FROM member WHERE loginId = ?";
 		jdbcTemplate.update(sql, loginId);
+	}
+
+	public List<User> selectAll() {
+		String sql = "SELECT * FROM member";
+		return jdbcTemplate.query(sql, userMapper);
 	}
 }
