@@ -50,15 +50,15 @@ public class UserController {
 		return userService.getUser(loginId);
 	}
 
-	@PutMapping()
+	@PutMapping("/{loginId}")
 	@ResponseStatus(HttpStatus.OK)
-	public void update(@RequestParam String loginId, @RequestBody UserUpdateRequest request){
+	public void update(@PathVariable String loginId, @RequestBody UserUpdateRequest request){
 		userService.update(loginId, request);
 	}
 
-	@DeleteMapping
+	@DeleteMapping("/{loginId}")
 	@ResponseStatus(HttpStatus.OK)
-	public void delete(@RequestParam String loginId){
+	public void delete(@PathVariable String loginId){
 		userService.delete(loginId);
 	}
 }
