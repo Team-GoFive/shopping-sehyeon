@@ -1,6 +1,7 @@
 package com.kt.repository;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.kt.domain.User;
@@ -20,4 +21,25 @@ public class UserRepository {
 		jdbcTemplate.update(sql, user.getLoginId(), user.getPassword(), user.getName(), user.getBirthday().toString());
 
 	}
+
+	public User select(String loginId){
+		String sql = "SELECT * FROM member WHERE loginId = ?";
+		return jdbcTemplate.queryForObject(sql, userMapper, loginId);
+	}
+
+	public void update(String loginId, User user){
+		String sql = "UPDATE member SET password = ?, name = ?, birthday = ? WHERE loginId = ?";
+		jdbcTemplate.update(sql, user.getPassword(), user.getName(), user.getBirthday(), loginId);
+	}
+
+	// user 데이터 조회를 위한 mapper 클래스
+	RowMapper<User> userMapper = (rs, rowNum) -> {
+		User user = new User(
+			rs.getString("loginId"),
+			rs.getString("password"),
+			rs.getString("name"),
+			rs.getDate("birthday").toLocalDate()
+		);
+		return user;
+	};
 }

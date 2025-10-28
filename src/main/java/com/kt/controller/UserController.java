@@ -1,13 +1,17 @@
 package com.kt.controller;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kt.dto.UserCreateRequest;
+import com.kt.dto.UserUpdateRequest;
 import com.kt.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -27,5 +31,11 @@ public class UserController {
 		// jackson object mapper -> json to dto 매핑
 		userService.create(request);
 		return "hihi";
+	}
+
+	@PutMapping()
+	@ResponseStatus(HttpStatus.OK)
+	public void update(@RequestParam String loginId, @RequestBody UserUpdateRequest request){
+		userService.update(loginId, request);
 	}
 }
