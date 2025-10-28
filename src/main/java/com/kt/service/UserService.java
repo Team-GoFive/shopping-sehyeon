@@ -34,4 +34,9 @@ public class UserService {
 		repository.update(loginId, user);
 		System.out.println("user 변경 완료");
 	}
+
+	public void delete(String loginId) {
+		// loginId에 해당하는 user 삭제
+		repository.delete(loginId);
+	}
 }

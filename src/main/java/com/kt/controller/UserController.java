@@ -1,6 +1,7 @@
 package com.kt.controller;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -37,5 +38,11 @@ public class UserController {
 	@ResponseStatus(HttpStatus.OK)
 	public void update(@RequestParam String loginId, @RequestBody UserUpdateRequest request){
 		userService.update(loginId, request);
+	}
+
+	@DeleteMapping
+	@ResponseStatus(HttpStatus.OK)
+	public void delete(@RequestParam String loginId){
+		userService.delete(loginId);
 	}
 }
