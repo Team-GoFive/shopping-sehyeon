@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 public class UserRepository {
 	private final JdbcTemplate jdbcTemplate;
 	// user 데이터 조회를 위한 mapper 클래스
-	RowMapper<User> userMapper = (rs, rowNum) -> {
+	private final RowMapper<User> userMapper = (rs, rowNum) -> {
 		String genderStr = rs.getString("gender");
 		Gender gender = null;
 		if (genderStr != null && !genderStr.isBlank()) {
