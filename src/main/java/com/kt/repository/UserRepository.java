@@ -53,7 +53,7 @@ public class UserRepository {
 			user.getName(),
 			user.getEmail(),
 			user.getMobile(),
-			user.getGender().toString(),
+			user.getGender() != null ? user.getGender().toString() : null,
 			user.getBirthday().toString(),
 			user.getCreatedAt().toString(),
 			user.getUpdatedAt().toString()
