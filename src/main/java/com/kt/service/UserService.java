@@ -1,5 +1,6 @@
 package com.kt.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -16,11 +17,21 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 	private final UserRepository repository;
 
-	public void create(UserCreateRequest request){
-		System.out.println("UserService, request = " + request);
-
+	public void create(UserCreateRequest request) {
 		// repository로 넘길거임
-		User user = new User(request.loginId(), request.password(), request.name(), request.birthday());
+		Long id = repository.findMaxId();
+		User user = new User(
+			id == null ? 1L : id + 1,
+			request.loginId(),
+			request.password(),
+			request.name(),
+			request.mobile(),
+			request.email(),
+			request.gender(),
+			request.birthday(),
+			LocalDateTime.now(),
+			LocalDateTime.now()
+		);
 		repository.save(user);
 	}
 

@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import com.kt.domain.Gender;
 import com.kt.domain.User;
 import com.kt.dto.UserUpdateRequest;
 
@@ -15,14 +16,57 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserRepository {
 	private final JdbcTemplate jdbcTemplate;
+	// user 데이터 조회를 위한 mapper 클래스
+	RowMapper<User> userMapper = (rs, rowNum) -> {
+		String genderStr = rs.getString("gender");
+		Gender gender = null;
+		if (genderStr != null && !genderStr.isBlank()) {
+			try {
+				gender = com.kt.domain.Gender.valueOf(genderStr.toUpperCase());
+			} catch (IllegalArgumentException ignored) {
+				gender = null;
+			}
+		}
 
-	public void save(User user){
-		String sql = "INSERT INTO MEMBER (loginId, password, name, birthday) VALUES (?,?,?,?)";
-		// 서비스에서 dto를 도메인(비즈니스모델)으로 바꾼다음 전
-		jdbcTemplate.update(sql, user.getLoginId(), user.getPassword(), user.getName(), user.getBirthday().toString());
+		User user = new User(
+			rs.getLong("id"),
+			rs.getString("loginId"),
+			rs.getString("password"),
+			rs.getString("name"),
+			rs.getString("mobile"),
+			rs.getString("email"),
+			gender,
+			rs.getDate("birthday").toLocalDate(),
+			null,
+			null
+		);
+		return user;
+	};
+
+	public void save(User user) {
+		String sql = "INSERT INTO member (id, loginId, password, name, email, mobile, gender, birthday, createdAt, updatedAt) VALUES (?,?,?,?,?,?,?,?,?,?)";
+		jdbcTemplate.update(
+			sql,
+			user.getId(),
+			user.getLoginId(),
+			user.getPassword(),
+			user.getName(),
+			user.getEmail(),
+			user.getMobile(),
+			user.getGender().toString(),
+			user.getBirthday().toString(),
+			user.getCreatedAt().toString(),
+			user.getUpdatedAt().toString()
+		);
 	}
 
-	public User select(String loginId){
+	// id max값 찾기
+	public Long findMaxId() {
+		String sql = "SELECT MAX(id) FROM member";
+		return jdbcTemplate.queryForObject(sql, Long.class);
+	}
+
+	public User select(String loginId) {
 		String sql = "SELECT * FROM member WHERE loginId = ?";
 		return jdbcTemplate.queryForObject(sql, userMapper, loginId);
 	}
@@ -32,7 +76,7 @@ public class UserRepository {
 		return jdbcTemplate.query(sql, userMapper);
 	}
 
-	public void update(String loginId, UserUpdateRequest user){
+	public void update(String loginId, UserUpdateRequest user) {
 		String sql = "UPDATE member SET password = ?, name = ?, birthday = ? WHERE loginId = ?";
 		jdbcTemplate.update(sql, user.password(), user.name(), user.birthday(), loginId);
 	}
@@ -41,15 +85,4 @@ public class UserRepository {
 		String sql = "DELETE FROM member WHERE loginId = ?";
 		jdbcTemplate.update(sql, loginId);
 	}
-
-	// user 데이터 조회를 위한 mapper 클래스
-	RowMapper<User> userMapper = (rs, rowNum) -> {
-		User user = new User(
-			rs.getString("loginId"),
-		rs.getString("password"),
-		rs.getString("name"),
-		rs.getDate("birthday").toLocalDate()
-		);
-		return user;
-	};
 }
