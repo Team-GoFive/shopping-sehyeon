@@ -37,8 +37,8 @@ public class UserRepository {
 			rs.getString("email"),
 			gender,
 			rs.getDate("birthday").toLocalDate(),
-			null,
-			null
+			rs.getTimestamp("createdAt") != null ? rs.getTimestamp("createdAt").toLocalDateTime() : null,
+			rs.getTimestamp("updatedAt") != null ? rs.getTimestamp("updatedAt").toLocalDateTime() : null
 		);
 		return user;
 	};
