@@ -19,7 +19,7 @@ public record UserCreateRequest(
 	String name,
 	@NotBlank
 	// 이메일 형식
-	@Pattern(regexp = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")
+	@Pattern(regexp = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
 	String email,
 	@NotBlank
 	// 000-0000-0000
