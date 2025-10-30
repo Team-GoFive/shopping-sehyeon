@@ -36,7 +36,7 @@ public class UserRepository {
 			rs.getString("mobile"),
 			rs.getString("email"),
 			gender,
-			rs.getDate("birthday").toLocalDate(),
+			rs.getDate("birthday") != null ? rs.getDate("birthday").toLocalDate() : null,
 			rs.getTimestamp("createdAt") != null ? rs.getTimestamp("createdAt").toLocalDateTime() : null,
 			rs.getTimestamp("updatedAt") != null ? rs.getTimestamp("updatedAt").toLocalDateTime() : null
 		);
