@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.cglib.core.Local;
 import org.springframework.data.util.Pair;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -102,7 +103,7 @@ public class UserRepository {
 	public void updatePassword(Long id, String newPassword) {
 		// UPDATE {table} SET {column} = {value} WHERE {condition}
 		String sql = "UPDATE member SET password = ?, updatedAt = ? WHERE id = ?";
-		jdbcTemplate.update(sql, newPassword, id);
+		jdbcTemplate.update(sql, newPassword, LocalDateTime.now().toString(), id);
 	}
 
 	// 전체 user 조회
