@@ -46,6 +46,7 @@ public class UserRepository {
 		);
 		return user;
 	}
+
 	private final RowMapper<User> rowMapper() {
 		return (rs, rowNum) -> mapToUser(rs);
 	}
@@ -100,7 +101,7 @@ public class UserRepository {
 	// updatePassword
 	public void updatePassword(Long id, String newPassword) {
 		// UPDATE {table} SET {column} = {value} WHERE {condition}
-		var sql = "UPDATE member SET password = ? WHERE id = ?";
+		String sql = "UPDATE member SET password = ?, updatedAt = ? WHERE id = ?";
 		jdbcTemplate.update(sql, newPassword, id);
 	}
 
@@ -131,17 +132,14 @@ public class UserRepository {
 		return Pair.of(users, totalElements);
 	}
 
-	public void search(int page, int size){
+	public void search(int page, int size) {
 
 	}
-
 
 	public User select(String loginId) {
 		String sql = "SELECT * FROM member WHERE loginId = ?";
 		return jdbcTemplate.queryForObject(sql, rowMapper(), loginId);
 	}
-
-
 
 	public void updateById(Long id, String name, String email, String mobile) {
 		String sql = "UPDATE member SET name = ?, email = ?, mobile = ?, updatedAt = ? WHERE id = ?";
@@ -151,11 +149,5 @@ public class UserRepository {
 	public void deleteById(Long id) {
 		String sql = "DELETE FROM member WHERE id = ?";
 		jdbcTemplate.update(sql, id);
-	}
-
-	// 비밀번호 초기화
-	public void resetPassword(Long id, String tempPassword) {
-		String sql = "UPDATE member SET password = ?, updatedAt = ? WHERE id = ?";
-		jdbcTemplate.update(sql, tempPassword, LocalDateTime.now().toString(), id);
 	}
 }

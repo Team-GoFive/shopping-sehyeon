@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class UserService {
+	public static final String RESET_PASSWORD = "ABCD1234!@";
 	private final UserRepository repository;
 
 	public void create(UserCreateRequest request) {
@@ -84,5 +85,9 @@ public class UserService {
 
 	public void delete(Long id) {
 		repository.deleteById(id);
+	}
+
+	public void resetPassword(Long id) {
+		repository.updatePassword(id, RESET_PASSWORD);
 	}
 }
