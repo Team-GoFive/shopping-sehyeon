@@ -82,8 +82,7 @@ public class UserService {
 		repository.updateById(id, name, mobile, email);
 	}
 
-	public void delete(String loginId) {
-		// loginId에 해당하는 user 삭제
-		repository.delete(loginId);
+	public void delete(Long id) {
+		repository.deleteById(id);
 	}
 }
