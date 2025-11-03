@@ -1,6 +1,7 @@
 package com.kt.controller;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -54,6 +55,11 @@ public class AdminUserController {
 	}
 
 	// todo: 유저 삭제
+	@DeleteMapping("/{id}")
+	@ResponseStatus(HttpStatus.OK)
+	public void delete(@PathVariable Long id) {
+		userService.delete(id);
+	}
 	// DELETE FROM MEMBER WHERE id = ?
 	// todo: 유저 비밀번호 초기화
 }
