@@ -68,10 +68,4 @@ public class UserController {
 	) {
 		userService.changePassword(id, request.oldPassword(), request.newPassword());
 	}
-
-	@DeleteMapping("/{loginId}")
-	@ResponseStatus(HttpStatus.OK)
-	public void delete(@PathVariable String loginId) {
-		userService.delete(loginId);
-	}
 }
