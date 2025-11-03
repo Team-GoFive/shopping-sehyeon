@@ -143,9 +143,9 @@ public class UserRepository {
 
 
 
-	public void update(String loginId, UserUpdateRequest user) {
-		String sql = "UPDATE member SET password = ?, name = ?, birthday = ? WHERE loginId = ?";
-		jdbcTemplate.update(sql, user.password(), user.name(), user.birthday(), loginId);
+	public void update(Long id, String name, String email, String mobile) {
+		String sql = "UPDATE member SET name = ?, email = ?, mobile = ? WHERE id = ?";
+		jdbcTemplate.update(sql, name, email, mobile, id);
 	}
 
 	public void delete(String loginId) {

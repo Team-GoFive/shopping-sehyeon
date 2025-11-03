@@ -41,4 +41,8 @@ public class AdminUserController {
 	public User detail(@RequestParam Long id) {
 		return userService.detail(id);
 	}
+
+	// todo: 유저 정보 수정
+
+
 }

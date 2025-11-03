@@ -69,12 +69,6 @@ public class UserController {
 		userService.changePassword(id, request.oldPassword(), request.newPassword());
 	}
 
-	@PutMapping("/{loginId}")
-	@ResponseStatus(HttpStatus.OK)
-	public void update(@PathVariable String loginId, @RequestBody UserUpdateRequest request) {
-		userService.update(loginId, request);
-	}
-
 	@DeleteMapping("/{loginId}")
 	@ResponseStatus(HttpStatus.OK)
 	public void delete(@PathVariable String loginId) {
