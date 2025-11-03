@@ -85,4 +85,16 @@ public class UserRepository {
 		String sql = "DELETE FROM member WHERE loginId = ?";
 		jdbcTemplate.update(sql, loginId);
 	}
+
+	// 크게 세가지 정도 아이디 중복 체크 방법
+	// 1. count해서 0보다 큰지 체크
+	// -> db에 만약 유저가 3000만명 있다면 3000만건을 다 뒤져야함(full-scan). 비효율적
+	// 2. unique 제약조건 걸고 예외처리
+	// -> 제약조건 위반 예외가 발생. 데이터베이스에서 발생하는 에러 처리는 복잡하고 번거로움. DataViolation Exception 처리가 꽤나 번거로움
+	// 3. exist로 존재 여부 체크 ✅
+	// -> boolean으로 값 존재 여부를 바로 알 수 있음
+	public boolean existsByLoginId(String loginId){
+		String sql = "SELECT EXISTS (SELECT 1 FROM MEMBER WHERE loginId = ?)";
+		return Boolean.TRUE.equals(jdbcTemplate.queryForObject(sql, Boolean.class, loginId));
+	}
 }
