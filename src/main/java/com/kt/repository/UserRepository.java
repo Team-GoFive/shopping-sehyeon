@@ -153,4 +153,9 @@ public class UserRepository {
 		jdbcTemplate.update(sql, id);
 	}
 
+	// 비밀번호 초기화
+	public void resetPassword(Long id, String tempPassword) {
+		String sql = "UPDATE member SET password = ?, updatedAt = ? WHERE id = ?";
+		jdbcTemplate.update(sql, tempPassword, LocalDateTime.now().toString(), id);
+	}
 }
