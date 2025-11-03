@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kt.domain.User;
 import com.kt.dto.CustomPage;
 import com.kt.service.UserService;
 
@@ -33,5 +34,11 @@ public class AdminUserController {
 		@RequestParam(required = false) String keyword
 	) {
 		return userService.searchUsers(page, size, keyword);
+	}
+
+	@GetMapping("/detail")
+	@ResponseStatus(HttpStatus.OK)
+	public User detail(@RequestParam Long id) {
+		return userService.detail(id);
 	}
 }

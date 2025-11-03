@@ -72,6 +72,12 @@ public class UserService {
 		);
 	}
 
+	public User detail(Long id) {
+		// id에 해당하는 user 조회
+		return repository.selectById(id)
+			.orElseThrow(() -> new IllegalArgumentException("해당 유저를 찾을 수 없습니다."));
+	}
+
 	public void update(String loginId, UserUpdateRequest request) {
 		// loginId, 변경된 user 정보 넘김
 		repository.update(loginId, request);
