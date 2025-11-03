@@ -69,19 +69,6 @@ public class UserController {
 		userService.changePassword(id, request.oldPassword(), request.newPassword());
 	}
 
-	@GetMapping
-	@ResponseStatus(HttpStatus.OK)
-	public List<User> getUsers() {
-		return userService.getUsers();
-	}
-
-	// user 조회(loginId)
-	@GetMapping("/{loginId}")
-	@ResponseStatus(HttpStatus.OK)
-	public User getUser(@PathVariable String loginId) {
-		return userService.getUser(loginId);
-	}
-
 	@PutMapping("/{loginId}")
 	@ResponseStatus(HttpStatus.OK)
 	public void update(@PathVariable String loginId, @RequestBody UserUpdateRequest request) {

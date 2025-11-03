@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.util.Pair;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -103,16 +104,44 @@ public class UserRepository {
 		jdbcTemplate.update(sql, newPassword, id);
 	}
 
+	// 전체 user 조회
+	public Pair<List<User>, Long> selectAll(int page, int size, String keyword) {
+		// paging의 구조
+		// 백엔드 입장에서 필요한 것
+		// 1. 한 화면에 몇개 보여줄 것인가? -> pageSize
+		// 2. 내가 몇번째 페이지를 보고 있나? -> pageNumber
+		// offset = (pageNumber - 1) * pageSize
+		// limit = pageSize
+
+		// 프론트엔드에서 페이징을 구현할때 필요한 정보
+		// 데이터들
+		// 1. 한 화면에 몇개 보여줄 것인가? -> limit (pageSize)
+		// 2. 내가 몇번째 페이지를 보고 있나? -> 전달받은거 그대로 보내주기
+		// 3. 몇개의 페이지가 생기나?(백엔드가 좋아하는 영역)
+		// 4. 전체 데이터가 몇개인가? -> totalElements (무조건)
+
+		// offset 방식은 full-scan이 발생할 수 있어서 데이터가 많아지면 느려질 수 있음
+		// cursor 기반 페이징이 더 효율적이지만 구현이 더 복잡함
+		// 키워드 검색 = LIKE 연산자 사용 %keyword%(포함), %keyword(앞에 무조건), keyword%(뒤에 무조건)
+		String sql = "SELECT * FROM member WHERE name LIKE CONCAT('%', ?, '%') LIMIT ? OFFSET ?";
+		var users = jdbcTemplate.query(sql, rowMapper(), keyword, size, page);
+		String countSql = "SELECT COUNT(*) FROM member";
+		var totalElements = jdbcTemplate.queryForObject(countSql, Long.class);
+
+		return Pair.of(users, totalElements);
+	}
+
+	public void search(int page, int size){
+
+	}
+
 
 	public User select(String loginId) {
 		String sql = "SELECT * FROM member WHERE loginId = ?";
 		return jdbcTemplate.queryForObject(sql, rowMapper(), loginId);
 	}
 
-	public List<User> selectAll() {
-		String sql = "SELECT * FROM member";
-		return jdbcTemplate.query(sql, rowMapper());
-	}
+
 
 	public void update(String loginId, UserUpdateRequest user) {
 		String sql = "UPDATE member SET password = ?, name = ?, birthday = ? WHERE loginId = ?";
