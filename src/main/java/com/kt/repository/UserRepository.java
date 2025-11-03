@@ -2,6 +2,7 @@ package com.kt.repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Repository;
 
 import com.kt.domain.Gender;
 import com.kt.domain.User;
-import com.kt.dto.UserUpdateRequest;
 
 import lombok.RequiredArgsConstructor;
 
@@ -143,9 +143,9 @@ public class UserRepository {
 
 
 
-	public void update(Long id, String name, String email, String mobile) {
-		String sql = "UPDATE member SET name = ?, email = ?, mobile = ? WHERE id = ?";
-		jdbcTemplate.update(sql, name, email, mobile, id);
+	public void updateById(Long id, String name, String email, String mobile) {
+		String sql = "UPDATE member SET name = ?, email = ?, mobile = ?, updatedAt = ? WHERE id = ?";
+		jdbcTemplate.update(sql, name, email, mobile, LocalDateTime.now().toString(), id);
 	}
 
 	public void delete(String loginId) {
