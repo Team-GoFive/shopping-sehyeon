@@ -60,6 +60,11 @@ public class AdminUserController {
 	public void delete(@PathVariable Long id) {
 		userService.delete(id);
 	}
-	// DELETE FROM MEMBER WHERE id = ?
+
 	// todo: 유저 비밀번호 초기화
+	@PutMapping("/{id}/reset-password")
+	@ResponseStatus(HttpStatus.OK)
+	public void resetPassword(@PathVariable Long id) {
+		userService.resetPassword(id);
+	}
 }
