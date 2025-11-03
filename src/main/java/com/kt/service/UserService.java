@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import com.kt.domain.User;
 import com.kt.dto.CustomPage;
 import com.kt.dto.UserCreateRequest;
-import com.kt.dto.UserUpdateRequest;
 import com.kt.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -80,7 +79,7 @@ public class UserService {
 
 	public void update(Long id, String name, String mobile, String email) {
 		// loginId, 변경된 user 정보 넘김
-		repository.update(id, name, mobile, email);
+		repository.updateById(id, name, mobile, email);
 	}
 
 	public void delete(String loginId) {
