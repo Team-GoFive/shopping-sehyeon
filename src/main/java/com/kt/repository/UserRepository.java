@@ -93,8 +93,15 @@ public class UserRepository {
 	// -> 제약조건 위반 예외가 발생. 데이터베이스에서 발생하는 에러 처리는 복잡하고 번거로움. DataViolation Exception 처리가 꽤나 번거로움
 	// 3. exist로 존재 여부 체크 ✅
 	// -> boolean으로 값 존재 여부를 바로 알 수 있음
-	public boolean existsByLoginId(String loginId){
+	public boolean existsByLoginId(String loginId) {
 		String sql = "SELECT EXISTS (SELECT 1 FROM MEMBER WHERE loginId = ?)";
 		return Boolean.TRUE.equals(jdbcTemplate.queryForObject(sql, Boolean.class, loginId));
+	}
+
+	// updatePassword
+	public void updatePassword(int id, String newPassword) {
+		// UPDATE {table} SET {column} = {value} WHERE {condition}
+		var sql = "UPDATE member SET password = ? WHERE id = ?";
+		jdbcTemplate.update(sql, newPassword, id);
 	}
 }
