@@ -35,6 +35,10 @@ public class UserService {
 		repository.save(user);
 	}
 
+	public Boolean isDuplicateLoginId(String loginId) {
+		return repository.existsByLoginId(loginId);
+	}
+
 	public List<User> getUsers() {
 		return repository.selectAll();
 	}
