@@ -39,6 +39,18 @@ public class UserService {
 		return repository.existsByLoginId(loginId);
 	}
 
+	public void changePassword(int id, String oldPassword, String password) {
+		// 존재하지 않으면 유저를 찾을 수 없다는 예외 처리
+		if(!repository.existsById(id)){
+			throw new IllegalArgumentException("해당 유저를 찾을 수 없습니다.");
+		}
+		// 기존 비밀번호와 일치하지 않으면 예외 처리
+		if(oldPassword.equals(password)){
+			throw new IllegalArgumentException("기존 비밀번호와 동일한 비밀번호로 변경할 수 없습니다.");
+		}
+		repository.updatePassword(id, password);
+	}
+
 	public List<User> getUsers() {
 		return repository.selectAll();
 	}

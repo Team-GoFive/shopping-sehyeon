@@ -98,6 +98,11 @@ public class UserRepository {
 		return Boolean.TRUE.equals(jdbcTemplate.queryForObject(sql, Boolean.class, loginId));
 	}
 
+	public boolean existsById(int id) {
+		String sql = "SELECT EXISTS (SELECT 1 FROM MEMBER WHERE id = ?)";
+		return Boolean.TRUE.equals(jdbcTemplate.queryForObject(sql, Boolean.class, id));
+	}
+
 	// updatePassword
 	public void updatePassword(int id, String newPassword) {
 		// UPDATE {table} SET {column} = {value} WHERE {condition}
