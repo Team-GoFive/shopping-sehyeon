@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kt.domain.User;
 import com.kt.dto.UserCreateRequest;
+import com.kt.dto.UserUpdatePasswordRequest;
 import com.kt.dto.UserUpdateRequest;
 import com.kt.service.UserService;
 
@@ -56,6 +58,16 @@ public class UserController {
 		return userService.isDuplicateLoginId(loginId);
 	}
 
+	//uri는 식별이 가능해야한다.
+	// 어떤 유저?, put, patch, post는 body에 담아서 보내야함
+	@PutMapping("/{id}/update-password")
+	@ResponseStatus(HttpStatus.OK)
+	public void updatePassword(
+		@PathVariable Long id,
+		@RequestBody UserUpdatePasswordRequest request
+	) {
+		userService.changePassword(id, request.oldPassword(), request.newPassword());
+	}
 
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)

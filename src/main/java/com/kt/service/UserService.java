@@ -2,6 +2,7 @@ package com.kt.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -39,15 +40,21 @@ public class UserService {
 		return repository.existsByLoginId(loginId);
 	}
 
-	public void changePassword(int id, String oldPassword, String password) {
-		// 존재하지 않으면 유저를 찾을 수 없다는 예외 처리
-		if(!repository.existsById(id)){
-			throw new IllegalArgumentException("해당 유저를 찾을 수 없습니다.");
-		}
-		// 기존 비밀번호와 일치하지 않으면 예외 처리
+	public void changePassword(Long id, String oldPassword, String password) {
+
+		// 유저를 조회해서 비밀번호가 같은지 조회
+		var user = repository.selectById(id)
+			.orElseThrow(() -> new IllegalArgumentException("해당 유저를 찾을 수 없습니다."));
+
+		// 기존 비밀번호와 동일한 비밀번호로 변경할 수 없음
 		if(oldPassword.equals(password)){
 			throw new IllegalArgumentException("기존 비밀번호와 동일한 비밀번호로 변경할 수 없습니다.");
 		}
+
+		if(!user.getPassword().equals(oldPassword)){
+			throw new IllegalArgumentException("기존 비밀번호가 일치하지 않습니다.");
+		}
+
 		repository.updatePassword(id, password);
 	}
 
