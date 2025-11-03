@@ -148,10 +148,9 @@ public class UserRepository {
 		jdbcTemplate.update(sql, name, email, mobile, LocalDateTime.now().toString(), id);
 	}
 
-	public void delete(String loginId) {
-
-		String sql = "DELETE FROM member WHERE loginId = ?";
-		jdbcTemplate.update(sql, loginId);
+	public void deleteById(Long id) {
+		String sql = "DELETE FROM member WHERE id = ?";
+		jdbcTemplate.update(sql, id);
 	}
 
 }
