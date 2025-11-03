@@ -2,6 +2,9 @@ package com.kt.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -9,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kt.domain.User;
 import com.kt.dto.CustomPage;
+import com.kt.dto.UserUpdateRequest;
 import com.kt.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -43,6 +47,13 @@ public class AdminUserController {
 	}
 
 	// todo: 유저 정보 수정
+	@PutMapping("/{id}")
+	@ResponseStatus(HttpStatus.OK)
+	public void update(@PathVariable Long id, @RequestBody UserUpdateRequest request) {
+		userService.update(id, request.name(), request.mobile(), request.email());
+	}
 
-
+	// todo: 유저 삭제
+	// DELETE FROM MEMBER WHERE id = ?
+	// todo: 유저 비밀번호 초기화
 }
