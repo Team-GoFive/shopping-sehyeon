@@ -1,11 +1,11 @@
 package com.kt.service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import org.springframework.stereotype.Service;
 
 import com.kt.domain.User;
+import com.kt.dto.CustomPage;
 import com.kt.dto.UserCreateRequest;
 import com.kt.dto.UserUpdateRequest;
 import com.kt.repository.UserRepository;
@@ -35,17 +35,52 @@ public class UserService {
 		repository.save(user);
 	}
 
-	public List<User> getUsers() {
-		return repository.selectAll();
+	public Boolean isDuplicateLoginId(String loginId) {
+		return repository.existsByLoginId(loginId);
 	}
 
-	public User getUser(String loginId) {
-		return repository.select(loginId);
+	public void changePassword(Long id, String oldPassword, String password) {
+
+		// 유저를 조회해서 비밀번호가 같은지 조회
+		var user = repository.selectById(id)
+			.orElseThrow(() -> new IllegalArgumentException("해당 유저를 찾을 수 없습니다."));
+
+		// 기존 비밀번호와 동일한 비밀번호로 변경할 수 없음
+		if (oldPassword.equals(password)) {
+			throw new IllegalArgumentException("기존 비밀번호와 동일한 비밀번호로 변경할 수 없습니다.");
+		}
+
+		if (!user.getPassword().equals(oldPassword)) {
+			throw new IllegalArgumentException("기존 비밀번호가 일치하지 않습니다.");
+		}
+
+		repository.updatePassword(id, password);
 	}
 
-	public void update(String loginId, UserUpdateRequest request) {
+	public CustomPage searchUsers(int page, int size, String keyword) {
+		// repository에서 user 목록 조회
+		// first: user 목록, second: 전체 user 수
+		var pair = repository.selectAll(page - 1, size, keyword);
+		var pages = (int)Math.ceil((double)pair.getSecond() / size);
+
+		return new CustomPage(
+			pair.getFirst(),
+			page,
+			size,
+			pages,
+			pair.getSecond()
+		);
+	}
+
+	public User detail(Long id) {
+		// id에 해당하는 user 조회
+		return repository.selectById(id)
+			.orElseThrow(() -> new IllegalArgumentException("해당 유저를 찾을 수 없습니다."));
+	}
+
+	public void update(Long id, String name, String mobile, String email) {
 		// loginId, 변경된 user 정보 넘김
-		repository.update(loginId, request);
+		repository.update(id, name, mobile, email);
 	}
 
 	public void delete(String loginId) {
