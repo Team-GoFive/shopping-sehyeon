@@ -28,7 +28,7 @@ public class ProductController {
 		@RequestParam int page,
 		@RequestParam int size
 	) {
-		return service.searchAll(PageRequest.of(page -1, size));
+		return service.searchAll(PageRequest.of(page - 1, size));
 	}
 
 	// 상품 조회 단건
