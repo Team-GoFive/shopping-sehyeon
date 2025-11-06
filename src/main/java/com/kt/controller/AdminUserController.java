@@ -1,5 +1,7 @@
 package com.kt.controller;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kt.domain.User;
-import com.kt.dto.CustomPage;
 import com.kt.dto.UserUpdateRequest;
 import com.kt.service.UserService;
 
@@ -33,12 +34,12 @@ public class AdminUserController {
 
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
-	public CustomPage search(
+	public Page<User> search(
 		@RequestParam(defaultValue = "1") int page,
 		@RequestParam(defaultValue = "10") int size,
 		@RequestParam(required = false) String keyword
 	) {
-		return userService.searchUsers(page, size, keyword);
+		return userService.searchUsers(keyword, PageRequest.of(page - 1, size));
 	}
 
 	@GetMapping("/detail")
@@ -47,21 +48,18 @@ public class AdminUserController {
 		return userService.detail(id);
 	}
 
-	// todo: 유저 정보 수정
 	@PutMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public void update(@PathVariable Long id, @RequestBody UserUpdateRequest request) {
 		userService.update(id, request.name(), request.mobile(), request.email());
 	}
 
-	// todo: 유저 삭제
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public void delete(@PathVariable Long id) {
 		userService.delete(id);
 	}
 
-	// todo: 유저 비밀번호 초기화
 	@PutMapping("/{id}/reset-password")
 	@ResponseStatus(HttpStatus.OK)
 	public void resetPassword(@PathVariable Long id) {
