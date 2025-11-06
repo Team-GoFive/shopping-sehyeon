@@ -38,7 +38,7 @@ public class Product extends BaseEntity {
 		this.updatedAt = LocalDateTime.now();
 	}
 
-	public void changeStatus(String status) {
-		this.status = ProductStatus.valueOf(status);
+	public void changeStatus(ProductStatus status) {
+		this.status = status;
 	}
 }
