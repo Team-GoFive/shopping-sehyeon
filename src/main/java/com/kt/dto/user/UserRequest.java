@@ -4,11 +4,13 @@ import java.time.LocalDate;
 
 import com.kt.domain.Gender;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 public class UserRequest {
+	@Schema(name = "UserRequest.Create", description = "회원 생성 요청")
 	public record Create(
 		@NotBlank
 		String loginId,
@@ -32,6 +34,7 @@ public class UserRequest {
 		LocalDate birthday
 	){}
 
+	@Schema(name = "UserRequest.PasswordUpdate", description = "비밀번호 변경 요청")
 	public record PasswordUpdate(
 		@NotBlank
 		@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")
@@ -41,6 +44,7 @@ public class UserRequest {
 		String newPassword
 	){}
 
+	@Schema(name = "UserRequest.Update", description = "회원 정보 수정 요청")
 	public record Update(
 		@NotBlank
 		String name,
