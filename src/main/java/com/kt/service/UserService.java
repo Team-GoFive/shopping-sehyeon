@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.kt.domain.Gender;
 import com.kt.domain.User;
 import com.kt.repository.UserRepository;
+import com.kt.validator.UserPasswordValidator;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,15 +31,16 @@ public class UserService {
 		LocalDate birthday
 	) {
 		// repository로 넘길거임
-		User user = new User(
-			loginId,
-			password,
-			name,
-			mobile,
-			email,
-			gender,
-			birthday
-		);
+		User user =
+			new User(
+				loginId,
+				password,
+				name,
+				mobile,
+				email,
+				gender,
+				birthday
+			);
 		userRepository.save(user);
 	}
 
@@ -47,17 +49,9 @@ public class UserService {
 	}
 
 	public void changePassword(Long id, String oldPassword, String password) {
-		var user = userRepository.findById(id)
-			.orElseThrow(() -> new IllegalArgumentException("해당 유저를 찾을 수 없습니다."));
+		var user = userRepository.findByIdOrThrow(id);
 
-		// 기존 비밀번호와 동일한 비밀번호로 변경할 수 없음
-		if (oldPassword.equals(password)) {
-			throw new IllegalArgumentException("기존 비밀번호와 동일한 비밀번호로 변경할 수 없습니다.");
-		}
-
-		if (!user.getPassword().equals(oldPassword)) {
-			throw new IllegalArgumentException("기존 비밀번호가 일치하지 않습니다.");
-		}
+		UserPasswordValidator.validate(oldPassword, password, user);
 
 		user.changePassword(password);
 	}
@@ -68,14 +62,12 @@ public class UserService {
 
 	public User detail(Long id) {
 		// id에 해당하는 user 조회
-		return userRepository.findById(id)
-			.orElseThrow(() -> new IllegalArgumentException("해당 유저를 찾을 수 없습니다."));
+		return userRepository.findByIdOrThrow(id);
 	}
 
 	public void update(Long id, String name, String mobile, String email) {
 		// loginId, 변경된 user 정보 넘김
-		var user = userRepository.findById(id)
-			.orElseThrow(() -> new IllegalArgumentException("해당 유저를 찾을 수 없습니다."));
+		var user = userRepository.findByIdOrThrow(id);
 
 		user.changeName(name);
 		user.changeMobile(mobile);
@@ -86,9 +78,8 @@ public class UserService {
 		userRepository.deleteById(id);
 	}
 
-	public void resetPassword(Long id){
-		var user = userRepository.findById(id)
-			.orElseThrow(() -> new IllegalArgumentException("해당 유저를 찾을 수 없습니다"));
+	public void resetPassword(Long id) {
+		var user = userRepository.findByIdOrThrow(id);
 
 		user.changePassword(RESET_PASSWORD);
 	}
