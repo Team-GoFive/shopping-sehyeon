@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kt.domain.User;
+import com.kt.common.ApiResult;
 import com.kt.dto.UserUpdateRequest;
+import com.kt.dto.user.UserResponse;
 import com.kt.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -24,45 +25,56 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AdminUserController {
 
-	// 유저 리스트 조회
-	// 유저 상세 조회
-	// 유저 정보 수정
-	// 유저 삭제
-	// 유저 비밀번호 초기화
-
 	private final UserService userService;
 
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
-	public Page<User> search(
+	public ApiResult<?> search(
 		@RequestParam(defaultValue = "1") int page,
 		@RequestParam(defaultValue = "10") int size,
 		@RequestParam(required = false) String keyword
 	) {
-		return userService.searchUsers(keyword, PageRequest.of(page - 1, size));
+
+		var users = userService.searchUsers(keyword, PageRequest.of(page - 1, size));
+		var data = users.map(user -> new UserResponse.Search(
+				user.getId(),
+				user.getName(),
+				user.getCreatedAt()
+			)
+		);
+		return ApiResult.ok(data);
 	}
 
 	@GetMapping("/detail")
 	@ResponseStatus(HttpStatus.OK)
-	public User detail(@RequestParam Long id) {
-		return userService.detail(id);
+	public ApiResult<?> detail(@RequestParam Long id) {
+		var user = UserResponse.Detail.of(userService.detail(id));
+		return ApiResult.ok(new UserResponse.Detail(
+				user.id(),
+				user.email(),
+				user.name()
+			)
+		);
 	}
 
 	@PutMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public void update(@PathVariable Long id, @RequestBody UserUpdateRequest request) {
+	public ApiResult<?> update(@PathVariable Long id, @RequestBody UserUpdateRequest request) {
 		userService.update(id, request.name(), request.mobile(), request.email());
+		return ApiResult.ok();
 	}
 
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public void delete(@PathVariable Long id) {
+	public ApiResult<?> delete(@PathVariable Long id) {
 		userService.delete(id);
+		return ApiResult.ok();
 	}
 
 	@PutMapping("/{id}/reset-password")
 	@ResponseStatus(HttpStatus.OK)
-	public void resetPassword(@PathVariable Long id) {
+	public ApiResult<Void> resetPassword(@PathVariable Long id) {
 		userService.resetPassword(id);
+		return ApiResult.ok();
 	}
 }
