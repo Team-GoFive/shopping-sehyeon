@@ -15,21 +15,12 @@ import com.kt.common.ApiResult;
 import com.kt.dto.user.UserRequest;
 import com.kt.service.UserService;
 
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
-@ApiResponses(
-	value = {
-		@ApiResponse(responseCode = "200", description = "중복 여부 반환"),
-		@ApiResponse(responseCode = "400", description = "잘못된 요청"),
-		@ApiResponse(responseCode = "500", description = "서버 오류")
-	}
-)
-public class UserController {
+public class UserController extends SwaggerAssistance {
 	private final UserService userService;
 
 	@PostMapping
