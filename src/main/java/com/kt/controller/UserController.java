@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kt.common.ApiResult;
-import com.kt.dto.UserCreateRequest;
-import com.kt.dto.UserUpdatePasswordRequest;
+import com.kt.dto.user.UserRequest;
 import com.kt.service.UserService;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -23,17 +22,32 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
+@ApiResponses(
+	value = {
+		@ApiResponse(responseCode = "200", description = "중복 여부 반환"),
+		@ApiResponse(responseCode = "400", description = "잘못된 요청"),
+		@ApiResponse(responseCode = "500", description = "서버 오류")
+	}
+)
 public class UserController {
-
 	private final UserService userService;
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	// json 형태의 body에 담겨서 post 요청으로 /users로 들어오면
 	// @RequestBody를 보고 jacksonObjectMapper가 동작해서 json을 읽어서 dto로 변환
-	public ApiResult<?> create(@RequestBody UserCreateRequest request) {
-		// jackson object mapper -> json to dto 매핑
-		userService.create(request);
+	public ApiResult<?> create(
+		@RequestBody UserRequest.Create request
+	) {
+		userService.create(
+			request.loginId(),
+			request.password(),
+			request.name(),
+			request.mobile(),
+			request.email(),
+			request.gender(),
+			request.birthday()
+		);
 		return ApiResult.ok();
 	}
 
@@ -41,16 +55,11 @@ public class UserController {
 	// boolean: primitive type, null 불가능, 기본값 false
 	// Boolean: reference type, null 가능
 	// null 가능성을 고려해야 할 때 Boolean 사용
-	@ApiResponses(
-		value = {
-			@ApiResponse(responseCode = "200", description = "중복 여부 반환"),
-			@ApiResponse(responseCode = "400", description = "잘못된 요청"),
-			@ApiResponse(responseCode = "500", description = "서버 오류")
-		}
-	)
 	@GetMapping("/duplicate-login-id")
 	@ResponseStatus(HttpStatus.OK)
-	public ApiResult<?> isDuplicateLoginId(@RequestParam String loginId) {
+	public ApiResult<?> isDuplicateLoginId(
+		@RequestParam String loginId
+	) {
 		var duplicateLoginId = userService.isDuplicateLoginId(loginId);
 		return ApiResult.ok(duplicateLoginId);
 	}
@@ -61,9 +70,13 @@ public class UserController {
 	@ResponseStatus(HttpStatus.OK)
 	public ApiResult<?> updatePassword(
 		@PathVariable Long id,
-		@RequestBody UserUpdatePasswordRequest request
+		@RequestBody UserRequest.PasswordUpdate request
 	) {
-		userService.changePassword(id, request.oldPassword(), request.newPassword());
+		userService.changePassword(
+			id,
+			request.oldPassword(),
+			request.newPassword()
+		);
 		return ApiResult.ok();
 	}
 }

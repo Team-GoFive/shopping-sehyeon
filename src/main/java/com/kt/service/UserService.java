@@ -1,13 +1,14 @@
 package com.kt.service;
 
+import java.time.LocalDate;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.kt.domain.Gender;
 import com.kt.domain.User;
-import com.kt.dto.UserCreateRequest;
-import com.kt.repository.UserJdbcRepository;
 import com.kt.repository.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -19,16 +20,24 @@ public class UserService {
 	public static final String RESET_PASSWORD = "Abcd1234!";
 	private final UserRepository userRepository;
 
-	public void create(UserCreateRequest request) {
+	public void create(
+		String loginId,
+		String password,
+		String name,
+		String mobile,
+		String email,
+		Gender gender,
+		LocalDate birthday
+	) {
 		// repository로 넘길거임
 		User user = new User(
-			request.loginId(),
-			request.password(),
-			request.name(),
-			request.mobile(),
-			request.email(),
-			request.gender(),
-			request.birthday()
+			loginId,
+			password,
+			name,
+			mobile,
+			email,
+			gender,
+			birthday
 		);
 		userRepository.save(user);
 	}
