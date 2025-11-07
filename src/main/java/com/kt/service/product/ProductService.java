@@ -22,38 +22,38 @@ public class ProductService {
 	}
 
 	public void update(Long id, String name, Long price, Long quantity){
-		var product = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
+		var product = repository.findByIdOrThrow(id);
 		product.update(name, price, quantity);
 	}
 
 	public void soldOut(Long id){
-		var product = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
+		var product = repository.findByIdOrThrow(id);
 		product.soldOut();
 	}
 
 	public void activate(Long id){
-		var product = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
+		var product = repository.findByIdOrThrow(id);
 		product.active();
 
 	}
 
 	public void inActive(Long id){
-		var product = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
+		var product = repository.findByIdOrThrow(id);
 		product.inActive();
 	}
 
 	public void delete(Long id){
-		var product = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
+		var product = repository.findByIdOrThrow(id);
 		product.delete();
 	}
 
 	public void decreaseStock(Long id, int quantity){
-		var product = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
+		var product = repository.findByIdOrThrow(id);
 		product.decreaseStock(quantity);
 	}
 
 	public void increaseStock(Long id, int quantity){
-		var product = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
+		var product = repository.findByIdOrThrow(id);
 		product.increaseStock(quantity);
 	}
 
@@ -62,7 +62,6 @@ public class ProductService {
 	}
 
 	public Product detail(Long id) {
-		return repository.findById(id)
-			.orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
+		return repository.findByIdOrThrow(id);
 	}
 }
