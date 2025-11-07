@@ -1,42 +1,109 @@
 package com.kt.controller;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kt.domain.product.Product;
-import com.kt.service.ProductService;
+import com.kt.common.ApiResult;
+import com.kt.dto.product.ProductRequest;
+import com.kt.dto.product.ProductResponse;
+import com.kt.service.product.ProductService;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/product")
+@RequestMapping("/api/products")
 @RequiredArgsConstructor
-public class ProductController {
+public class ProductController extends SwaggerAssistance{
 	private final ProductService service;
 
-	// 상품 조회(리스트, 페이징)
 	@GetMapping
 	@ResponseStatus(HttpStatus.OK)
-	public Page<Product> search(
+	public ApiResult<?> search(
 		@RequestParam int page,
 		@RequestParam int size
 	) {
-		return service.searchAll(PageRequest.of(page - 1, size));
+		var products = service.search(PageRequest.of(page - 1, size));
+		var data = products.map(product -> new ProductResponse.Search(
+			product.getId(),
+			product.getName(),
+			product.getPrice(),
+			product.getStock()
+		));
+
+		return ApiResult.ok(data);
 	}
 
-	// 상품 조회 단건
 	@GetMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public Product detail(@PathVariable Long id) {
-		return service.detail(id);
+	public ApiResult<?> detail(@PathVariable Long id) {
+		var product = service.detail(id);
+
+		return ApiResult.ok(new ProductResponse.Detail(
+			product.getId(),
+			product.getName(),
+			product.getPrice(),
+			product.getStock()
+		));
 	}
-	// todo: 재고 수량 감소
-	// todo: 재고 수량 증가
+
+	@PostMapping()
+	@ResponseStatus(HttpStatus.CREATED)
+	public ApiResult<?> create(@RequestBody ProductRequest.Create request) {
+		service.create(
+			request.name(),
+			request.price(),
+			request.quantity()
+		);
+		return ApiResult.ok();
+	}
+
+	@PutMapping("/{id}")
+	@ResponseStatus(HttpStatus.OK)
+	public ApiResult<?> update(@PathVariable Long id, @RequestBody ProductRequest.Update request) {
+		service.update(
+			id,
+			request.name(),
+			request.price(),
+			request.quantity()
+		);
+		return ApiResult.ok();
+	}
+
+	@PutMapping("/{id}/sold-out")
+	@ResponseStatus(HttpStatus.OK)
+	public ApiResult<?> soldOut(@PathVariable Long id) {
+		service.soldOut(id);
+		return ApiResult.ok();
+	}
+
+	@PutMapping("/{id}/activate")
+	@ResponseStatus(HttpStatus.OK)
+	public ApiResult<?> activate(@PathVariable Long id) {
+		service.activate(id);
+		return ApiResult.ok();
+	}
+
+	@PutMapping("/{id}/in-activate")
+	@ResponseStatus(HttpStatus.OK)
+	public ApiResult<?> inActivate(@PathVariable Long id) {
+		service.inActive(id);
+		return ApiResult.ok();
+	}
+
+	@DeleteMapping("/{id}")
+	@ResponseStatus(HttpStatus.OK)
+	public ApiResult<?> delete(@PathVariable Long id) {
+		service.delete(id);
+		return ApiResult.ok();
+	}
 }
