@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kt.domain.product.Product;
-import com.kt.dto.ProductStatusUpdateRequest;
 import com.kt.repository.ProductRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -17,14 +16,14 @@ import lombok.RequiredArgsConstructor;
 public class ProductService {
 	private final ProductRepository repository;
 
-	public void create(String name, Long price, Long stock){
-		var product = Product.create(name, price, stock);
+	public void create(String name, Long price, Long quantity){
+		var product = Product.create(name, price, quantity);
 		repository.save(product);
 	}
 
-	public void update(Long id, String name, Long price, Long stock){
+	public void update(Long id, String name, Long price, Long quantity){
 		var product = repository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 상품입니다."));
-		product.update(name, price, stock);
+		product.update(name, price, quantity);
 	}
 
 	public void soldOut(Long id){

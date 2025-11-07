@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kt.domain.product.Product;
 import com.kt.dto.ProductRegisterRequest;
 import com.kt.dto.ProductUpdateRequest;
+import com.kt.dto.product.ProductRequest;
 import com.kt.service.product.ProductService;
 
 import lombok.RequiredArgsConstructor;
@@ -44,22 +45,22 @@ public class ProductController {
 
 	@PostMapping()
 	@ResponseStatus(HttpStatus.CREATED)
-	public void create(@RequestBody ProductRegisterRequest request) {
+	public void create(@RequestBody ProductRequest.Create request) {
 		service.create(
 			request.name(),
 			request.price(),
-			request.stock()
+			request.quantity()
 		);
 	}
 
 	@PutMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public void update(@PathVariable Long id, @RequestBody ProductUpdateRequest request) {
+	public void update(@PathVariable Long id, @RequestBody ProductRequest.Update request) {
 		service.update(
 			id,
 			request.name(),
 			request.price(),
-			request.stock()
+			request.quantity()
 		);
 	}
 
