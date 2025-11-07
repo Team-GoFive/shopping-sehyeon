@@ -1,6 +1,5 @@
 package com.kt.controller;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kt.common.ApiResult;
-import com.kt.dto.UserUpdateRequest;
+import com.kt.dto.user.UserRequest;
 import com.kt.dto.user.UserResponse;
 import com.kt.service.UserService;
 
@@ -34,9 +33,9 @@ public class AdminUserController {
 		@RequestParam(defaultValue = "10") int size,
 		@RequestParam(required = false) String keyword
 	) {
-
 		var users = userService.searchUsers(keyword, PageRequest.of(page - 1, size));
-		var data = users.map(user -> new UserResponse.Search(
+		var data = users.map(user ->
+			new UserResponse.Search(
 				user.getId(),
 				user.getName(),
 				user.getCreatedAt()
@@ -47,9 +46,12 @@ public class AdminUserController {
 
 	@GetMapping("/detail")
 	@ResponseStatus(HttpStatus.OK)
-	public ApiResult<?> detail(@RequestParam Long id) {
+	public ApiResult<?> detail(
+		@RequestParam Long id
+	) {
 		var user = UserResponse.Detail.of(userService.detail(id));
-		return ApiResult.ok(new UserResponse.Detail(
+		return ApiResult.ok(
+			new UserResponse.Detail(
 				user.id(),
 				user.email(),
 				user.name()
@@ -59,14 +61,24 @@ public class AdminUserController {
 
 	@PutMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public ApiResult<?> update(@PathVariable Long id, @RequestBody UserUpdateRequest request) {
-		userService.update(id, request.name(), request.mobile(), request.email());
+	public ApiResult<?> update(
+		@PathVariable Long id,
+		@RequestBody UserRequest.Update request
+	) {
+		userService.update(
+			id,
+			request.name(),
+			request.mobile(),
+			request.email()
+		);
 		return ApiResult.ok();
 	}
 
 	@DeleteMapping("/{id}")
 	@ResponseStatus(HttpStatus.OK)
-	public ApiResult<?> delete(@PathVariable Long id) {
+	public ApiResult<?> delete(
+		@PathVariable Long id
+	) {
 		userService.delete(id);
 		return ApiResult.ok();
 	}
