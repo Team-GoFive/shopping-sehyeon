@@ -31,6 +31,41 @@ public class Product extends BaseEntity {
 		this.updatedAt = LocalDateTime.now();
 	}
 
+	public static Product create(String name, Long price, Long stock){
+		return new Product(name, price, stock);
+	}
+
+	public void update(String name, Long price, Long stock){
+		this.name = name;
+		this.price = price;
+		this.stock = stock;
+	}
+
+	public void soldOut() {
+		this.status = ProductStatus.SOLD_OUT;
+	}
+
+	public void active(){
+		this.status = ProductStatus.ACTIVE;
+	}
+
+	public void inActive(){
+		this.status = ProductStatus.IN_ACTIVE;
+	}
+
+	public void delete(){
+		this.status = ProductStatus.DELETED;
+	}
+
+	public void decreaseStock(int stock) {
+		this.stock -= stock;
+	}
+
+	public void increaseStock(int stock) {
+		this.stock += stock;
+	}
+
+
 	public void changeProductDetail(String name, Long price, Long stock) {
 		this.name = name;
 		this.price = price;
