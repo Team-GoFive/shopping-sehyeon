@@ -17,8 +17,10 @@ import com.kt.dto.user.UserRequest;
 import com.kt.dto.user.UserResponse;
 import com.kt.service.UserService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
+@Tag(name = "User")
 @RestController
 @RequestMapping("/api/admin/users")
 @RequiredArgsConstructor

@@ -15,8 +15,10 @@ import com.kt.common.ApiResult;
 import com.kt.dto.user.UserRequest;
 import com.kt.service.UserService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
+@Tag(name = "User", description = "유저 관련 API")
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
