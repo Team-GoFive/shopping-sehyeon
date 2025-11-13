@@ -1,7 +1,9 @@
-package com.kt.domain;
+package com.kt.domain.user;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import com.kt.domain.Gender;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -9,7 +11,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,20 +32,74 @@ public class User {
 	private String email;
 	@Enumerated(EnumType.STRING)
 	private Gender gender;
+	@Enumerated(EnumType.STRING)
+	private Role role;
 	private LocalDate birthday;
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
 
-	public User(String loginId, String password, String name, String mobile, String email, Gender gender, LocalDate birthday) {
+	public User(
+		String loginId,
+		String password,
+		String name,
+		String mobile,
+		String email,
+		Gender gender,
+		Role role,
+		LocalDate birthday
+	) {
 		this.loginId = loginId;
 		this.password = password;
 		this.name = name;
 		this.mobile = mobile;
 		this.email = email;
 		this.gender = gender;
+		this.role = role;
 		this.birthday = birthday;
 		this.createdAt = LocalDateTime.now();
 		this.updatedAt = LocalDateTime.now();
+	}
+
+	public static User normalUser(
+		String loginId,
+		String password,
+		String name,
+		String email,
+		String mobile,
+		Gender gender,
+		LocalDate birthday
+	) {
+		return new User(
+			loginId,
+			password,
+			name,
+			mobile,
+			email,
+			gender,
+			Role.USER,
+			birthday
+		);
+	}
+
+	public static User admin(
+		String loginId,
+		String password,
+		String name,
+		String email,
+		String mobile,
+		Gender gender,
+		LocalDate birthday
+	) {
+		return new User(
+			loginId,
+			password,
+			name,
+			mobile,
+			email,
+			gender,
+			Role.ADMIN,
+			birthday
+		);
 	}
 
 	// set 보다는 change로 더 명확하게 표현

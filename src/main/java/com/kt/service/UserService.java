@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kt.domain.Gender;
-import com.kt.domain.User;
+import com.kt.domain.user.User;
 import com.kt.repository.UserRepository;
 import com.kt.validator.UserPasswordValidator;
 
@@ -31,16 +31,15 @@ public class UserService {
 		LocalDate birthday
 	) {
 		// repository로 넘길거임
-		User user =
-			new User(
-				loginId,
-				password,
-				name,
-				mobile,
-				email,
-				gender,
-				birthday
-			);
+		User user = User.normalUser(
+			loginId,
+			password,
+			name,
+			mobile,
+			email,
+			gender,
+			birthday
+		);
 		userRepository.save(user);
 	}
 
