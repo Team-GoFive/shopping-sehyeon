@@ -2,14 +2,14 @@ package com.kt.dto.user;
 
 import java.time.LocalDateTime;
 
-import com.kt.domain.User;
+import com.kt.domain.user.User;
 
 public class UserResponse {
 	public record Search(
 		Long id,
 		String name,
 		LocalDateTime createdAt
-	){
+	) {
 
 	}
 
@@ -17,7 +17,7 @@ public class UserResponse {
 		Long id,
 		String name,
 		String email
-	){
+	) {
 		public static Detail of(User user) {
 			return new Detail(
 				user.getId(),

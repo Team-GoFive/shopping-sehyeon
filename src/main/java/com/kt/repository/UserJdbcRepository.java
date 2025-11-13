@@ -12,7 +12,8 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import com.kt.domain.Gender;
-import com.kt.domain.User;
+import com.kt.domain.user.Role;
+import com.kt.domain.user.User;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,6 +33,15 @@ public class UserJdbcRepository {
 				gender = null;
 			}
 		}
+		String roleStr = rs.getString("role");
+		Role role = null;
+		if (roleStr != null && !roleStr.isBlank()) {
+			try {
+				role = Role.valueOf(roleStr.toUpperCase());
+			} catch (IllegalArgumentException ignored) {
+				role = null;
+			}
+		}
 		User user = new User(
 			rs.getLong("id"),
 			rs.getString("loginId"),
@@ -40,6 +50,7 @@ public class UserJdbcRepository {
 			rs.getString("mobile"),
 			rs.getString("email"),
 			gender,
+			role,
 			rs.getDate("birthday") != null ? rs.getDate("birthday").toLocalDate() : null,
 			rs.getTimestamp("createdAt") != null ? rs.getTimestamp("createdAt").toLocalDateTime() : null,
 			rs.getTimestamp("updatedAt") != null ? rs.getTimestamp("updatedAt").toLocalDateTime() : null

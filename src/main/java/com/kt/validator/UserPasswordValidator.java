@@ -2,7 +2,7 @@ package com.kt.validator;
 
 import com.kt.common.CustomException;
 import com.kt.common.ErrorCode;
-import com.kt.domain.User;
+import com.kt.domain.user.User;
 
 public class UserPasswordValidator {
 

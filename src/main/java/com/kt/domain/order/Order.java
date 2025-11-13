@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.kt.common.BaseEntity;
-import com.kt.domain.User;
 import com.kt.domain.orderprodut.OrderProduct;
+import com.kt.domain.user.User;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;

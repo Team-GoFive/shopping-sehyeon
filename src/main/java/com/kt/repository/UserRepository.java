@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.kt.common.CustomException;
 import com.kt.common.ErrorCode;
-import com.kt.domain.User;
+import com.kt.domain.user.User;
 
 public interface UserRepository extends JpaRepository<User, Long> {
 
@@ -14,7 +14,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
 	Boolean existsByLoginId(String loginId);
 
-	default User findByIdOrThrow(Long id){
+	default User findByIdOrThrow(Long id) {
 		return findById(id).orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
 	}
 }
