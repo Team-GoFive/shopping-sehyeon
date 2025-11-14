@@ -4,7 +4,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.util.StringUtils;
+
 import com.kt.common.BaseEntity;
+import com.kt.common.ErrorCode;
+import com.kt.common.PreConditions;
 import com.kt.domain.orderprodut.OrderProduct;
 
 import jakarta.persistence.Entity;
@@ -39,6 +43,9 @@ public class Product extends BaseEntity {
 	}
 
 	public static Product create(String name, Long price, Long stock) {
+		PreConditions.validate(StringUtils.hasText(name), ErrorCode.INVALID_PARAMETER);
+		PreConditions.validate(price != null && price >= 0, ErrorCode.INVALID_PARAMETER);
+		PreConditions.validate(stock != null && stock >= 0, ErrorCode.INVALID_PARAMETER);
 		return new Product(name, price, stock);
 	}
 
