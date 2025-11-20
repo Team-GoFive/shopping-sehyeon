@@ -18,8 +18,11 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity // 메서드 단위 권한 설정 활성화
 public class SecurityConfiguration {
 
-	private static final String[] GET_PERMIT_ALL = {};
-	private static final String[] POST_PERMIT_ALL = {};
+	private static final String[] GET_PERMIT_ALL = {"/api/users/**"};
+	private static final String[] POST_PERMIT_ALL = {
+		"/api/users/**",
+		"/api/auth/**"
+	};
 	private static final String[] PUT_PERMIT_ALL = {};
 	private static final String[] PATCH_PERMIT_ALL = {};
 	private static final String[] DELETE_PERMIT_ALL = {};
