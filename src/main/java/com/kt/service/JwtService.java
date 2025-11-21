@@ -38,4 +38,20 @@ public class JwtService {
 		return jwtProperties.getRefreshTokenExpiration();
 	}
 
+	public boolean validate(String token) {
+		return Jwts.parser()
+			.verifyWith(jwtProperties.getSecret())
+			.build()
+			.isSigned(token);
+	}
+
+	public Long parseId(String token) {
+		String id = Jwts.parser()
+			.verifyWith(jwtProperties.getSecret())
+			.build()
+			.parseSignedClaims(token)
+			.getPayload()
+			.getId();
+		return Long.valueOf(id);
+	}
 }

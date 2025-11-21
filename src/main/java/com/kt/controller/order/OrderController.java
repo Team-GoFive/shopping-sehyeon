@@ -8,14 +8,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kt.common.ApiResult;
 import com.kt.dto.order.OrderRequest;
-import com.kt.security.CurrentUser;
+import com.kt.security.DefaultCurrentUser;
 import com.kt.service.order.OrderService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/orders")
+@RequestMapping("/api/orders")
 @RequiredArgsConstructor
 public class OrderController {
 
@@ -23,12 +23,12 @@ public class OrderController {
 
 	@PostMapping
 	public ApiResult<Void> create(
-		@AuthenticationPrincipal CurrentUser currentUser,
+		@AuthenticationPrincipal DefaultCurrentUser defaultCurrentUser,
 		@RequestBody @Valid OrderRequest.Create request
 	) {
 		// 주문 생성 로직 구현
 		orderService.create(
-			currentUser.getId(),
+			defaultCurrentUser.getId(),
 			request.productId(),
 			request.quantity(),
 			request.receiverName(),

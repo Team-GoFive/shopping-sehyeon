@@ -12,20 +12,30 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.kt.security.JwtFilter;
+
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity // Spring Security 활성화
 @EnableMethodSecurity // 메서드 단위 권한 설정 활성화
+@RequiredArgsConstructor
 public class SecurityConfiguration {
 
-	private static final String[] GET_PERMIT_ALL = {"/api/users/**"};
+	private static final String[] GET_PERMIT_ALL = {
+		"/api/users/**",
+	};
 	private static final String[] POST_PERMIT_ALL = {
 		"/api/users/**",
-		"/api/auth/**"
+		"/api/auth/**",
+		"/api/products/**"
 	};
 	private static final String[] PUT_PERMIT_ALL = {};
 	private static final String[] PATCH_PERMIT_ALL = {};
 	private static final String[] DELETE_PERMIT_ALL = {};
+	private final JwtFilter jwtFilter;
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -54,6 +64,7 @@ public class SecurityConfiguration {
 			)
 			.authorizeHttpRequests(request -> request.anyRequest().authenticated())
 			.csrf(csrf -> csrf.disable())
+			.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
 			.build();
 	}
 }
