@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,9 +26,13 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfiguration {
 
 	private static final String[] GET_PERMIT_ALL = {
+		"/swagger-ui/**",
+		"/v3/api-docs/**",
+		"/api/**",
 		"/api/users/**",
 	};
 	private static final String[] POST_PERMIT_ALL = {
+		"/api/**",
 		"/api/users/**",
 		"/api/auth/**",
 		"/api/products/**"
@@ -60,11 +65,11 @@ public class SecurityConfiguration {
 					request.requestMatchers(HttpMethod.PUT, PUT_PERMIT_ALL).permitAll();
 					request.requestMatchers(HttpMethod.PATCH, PATCH_PERMIT_ALL).permitAll();
 					request.requestMatchers(HttpMethod.DELETE, DELETE_PERMIT_ALL).permitAll();
+					request.anyRequest().authenticated();
 				}
 			)
-			.authorizeHttpRequests(request -> request.anyRequest().authenticated())
-			.csrf(csrf -> csrf.disable())
 			.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+			.csrf(AbstractHttpConfigurer::disable)
 			.build();
 	}
 }
