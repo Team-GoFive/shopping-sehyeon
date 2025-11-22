@@ -19,11 +19,11 @@ public class TechUpAuthenticationToken extends AbstractAuthenticationToken {
 
 	@Override
 	public Object getCredentials() {
-		return null;
+		return defaultCurrentUser.getId();
 	}
 
 	@Override
 	public Object getPrincipal() {
-		return null;
+		return defaultCurrentUser;
 	}
 }
