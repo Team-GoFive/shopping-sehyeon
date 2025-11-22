@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 	public static final String RESET_PASSWORD = "Abcd1234!";
 	private final UserRepository userRepository;
+	private final PasswordEncoder passwordEncoder;
 
 	public void create(
 		String loginId,
@@ -33,7 +35,7 @@ public class UserService {
 		// repository로 넘길거임
 		User user = User.normalUser(
 			loginId,
-			password,
+			passwordEncoder.encode(password),
 			name,
 			mobile,
 			email,

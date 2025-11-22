@@ -1,6 +1,7 @@
 package com.kt.controller;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,8 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kt.common.ApiResult;
 import com.kt.dto.user.UserRequest;
+import com.kt.security.CurrentUser;
 import com.kt.service.UserService;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
@@ -22,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor
+@SecurityRequirement(name = "Bearer Authentication")
 public class UserController extends SwaggerAssistance {
 	private final UserService userService;
 
@@ -71,5 +75,13 @@ public class UserController extends SwaggerAssistance {
 			request.newPassword()
 		);
 		return ApiResult.ok();
+	}
+
+	@GetMapping("/orders")
+	@ResponseStatus(HttpStatus.OK)
+	public void getOrders(
+		@AuthenticationPrincipal CurrentUser currentUser
+	) {
+		currentUser.getId();
 	}
 }
