@@ -1,10 +1,12 @@
 package com.kt.service.order;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.kt.common.ErrorCode;
 import com.kt.common.Lock;
+import com.kt.common.Message;
 import com.kt.common.PreConditions;
 import com.kt.domain.order.Order;
 import com.kt.domain.order.Receiver;
@@ -24,6 +26,7 @@ public class OrderService {
 	private final ProductRepository productRepository;
 	private final OrderRepository orderRepository;
 	private final OrderProductRepository orderProductRepository;
+	private final ApplicationEventPublisher publisher;
 
 	// 주문 관련 비즈니스 로직 구현
 	@Lock(key = Lock.Key.PRODUCT)
@@ -55,5 +58,9 @@ public class OrderService {
 		product.decreaseStock(quantity);
 		product.mapToOrderProduct(orderProduct);
 		order.mapToOrderProduct(orderProduct);
+
+		// 저수준 모듈이 고수준 모듈을 의존하는 문제 발생
+		Message message = new Message("User " + user.getName() + " ordered " + quantity * product.getPrice() + " yuan.");
+		publisher.publishEvent(message);
 	}
 }
