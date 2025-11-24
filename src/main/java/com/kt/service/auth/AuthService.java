@@ -1,15 +1,16 @@
-package com.kt.service;
+package com.kt.service.auth;
 
 import org.springframework.data.util.Pair;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kt.common.CustomException;
-import com.kt.common.ErrorCode;
-import com.kt.common.PreConditions;
+import com.kt.common.exception.CustomException;
+import com.kt.common.exception.ErrorCode;
+import com.kt.common.support.PreConditions;
 import com.kt.domain.user.User;
 import com.kt.repository.UserRepository;
+import com.kt.service.jwt.JwtService;
 
 import lombok.RequiredArgsConstructor;
 

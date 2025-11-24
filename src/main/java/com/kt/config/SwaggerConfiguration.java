@@ -51,7 +51,7 @@ public class SwaggerConfiguration {
 		// local, default -> localhost:8080
 		// dev -> dev.ktechup.com
 		// prod -> ktechup.com
-		String profile = environment.getProperty("profile");
+		String profile = environment.getProperty("SPRING_PROFILES_ACTIVE");
 		switch (profile) {
 			case "local" -> profile = "localhost:8080";
 			case "dev" -> profile = "dev.ktechup.com";

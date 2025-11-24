@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import com.kt.common.CustomException;
+import com.kt.common.exception.CustomException;
 
 class ProductTest {
 

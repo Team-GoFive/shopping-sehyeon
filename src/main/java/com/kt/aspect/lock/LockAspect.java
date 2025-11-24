@@ -1,4 +1,4 @@
-package com.kt.aspect;
+package com.kt.aspect.lock;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -7,9 +7,9 @@ import org.redisson.api.RLock;
 import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Component;
 
-import com.kt.common.CustomException;
-import com.kt.common.ErrorCode;
-import com.kt.common.Lock;
+import com.kt.common.exception.CustomException;
+import com.kt.common.exception.ErrorCode;
+import com.kt.common.support.Lock;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,7 +20,7 @@ public class LockAspect {
 	private final AopTransactionManager aopTransactionManager;
 	private final RedissonClient redissonClient;
 
-	@Around("@annotation(com.kt.common.Lock) && @annotation(lock)")
+	@Around("@annotation(com.kt.common.support.Lock) && @annotation(lock)")
 	public Object lock(ProceedingJoinPoint joinPoint, Lock lock) throws Throwable {
 
 		String key = "product";

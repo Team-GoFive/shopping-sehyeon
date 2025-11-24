@@ -4,10 +4,10 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kt.common.ErrorCode;
-import com.kt.common.Lock;
-import com.kt.common.Message;
-import com.kt.common.PreConditions;
+import com.kt.common.exception.ErrorCode;
+import com.kt.common.support.Lock;
+import com.kt.common.support.Message;
+import com.kt.common.support.PreConditions;
 import com.kt.domain.order.Order;
 import com.kt.domain.order.Receiver;
 import com.kt.domain.orderprodut.OrderProduct;

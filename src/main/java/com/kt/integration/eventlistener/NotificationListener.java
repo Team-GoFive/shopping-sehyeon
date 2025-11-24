@@ -1,20 +1,20 @@
-package com.kt.integration;
+package com.kt.integration.eventlistener;
 
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import com.kt.common.Message;
-import com.kt.integration.notify.DefaultNotifyApi;
+import com.kt.common.support.Message;
+import com.kt.integration.notify.NotifyApi;
 
 import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
 public class NotificationListener {
-	private final DefaultNotifyApi slackApi;
+	private final NotifyApi notifyApi;
 
 	@EventListener(Message.class)
 	public void onMessage(Message message) {
-		slackApi.notify("Received: " + message.message());
+		notifyApi.notify(message.message());
 	}
 }

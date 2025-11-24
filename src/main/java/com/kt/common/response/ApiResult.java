@@ -1,4 +1,4 @@
-package com.kt.common;
+package com.kt.common.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
@@ -13,9 +13,10 @@ public class ApiResult<T> {
 	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private T data;
 
-	public static  ApiResult<Void> ok() {
+	public static ApiResult<Void> ok() {
 		return ApiResult.of("ok", "성공", null);
 	}
+
 	public static <T> ApiResult<T> ok(T data) {
 		return ApiResult.of("ok", "성공", data);
 	}

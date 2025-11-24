@@ -1,4 +1,4 @@
-package com.kt.dto.auth.LoginResponse;
+package com.kt.dto.auth;
 
 public record LoginResponse(
 	String accessToken,

@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kt.common.ApiResult;
+import com.kt.common.response.ApiResult;
 import com.kt.dto.auth.LoginRequest;
-import com.kt.dto.auth.LoginResponse.LoginResponse;
-import com.kt.service.AuthService;
+import com.kt.dto.auth.LoginResponse;
+import com.kt.service.auth.AuthService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

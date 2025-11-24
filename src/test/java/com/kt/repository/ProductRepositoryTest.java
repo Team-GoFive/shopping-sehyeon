@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import com.kt.domain.Gender;
+import com.kt.domain.user.Gender;
 import com.kt.domain.product.Product;
 import com.kt.domain.user.Role;
 import com.kt.domain.user.User;

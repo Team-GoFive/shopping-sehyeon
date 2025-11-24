@@ -1,4 +1,4 @@
-package com.kt.service;
+package com.kt.service.user;
 
 import java.time.LocalDate;
 
@@ -8,7 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.kt.domain.Gender;
+import com.kt.domain.user.Gender;
 import com.kt.domain.user.User;
 import com.kt.repository.UserRepository;
 import com.kt.validator.UserPasswordValidator;

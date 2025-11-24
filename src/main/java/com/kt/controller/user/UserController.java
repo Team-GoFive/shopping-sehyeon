@@ -1,4 +1,4 @@
-package com.kt.controller;
+package com.kt.controller.user;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -12,10 +12,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kt.common.ApiResult;
+import com.kt.common.response.ApiResult;
+import com.kt.common.support.SwaggerAssistance;
 import com.kt.dto.user.UserRequest;
 import com.kt.security.CurrentUser;
-import com.kt.service.UserService;
+import com.kt.service.user.UserService;
 
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;

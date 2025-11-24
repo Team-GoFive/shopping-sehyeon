@@ -1,4 +1,4 @@
-package com.kt.controller;
+package com.kt.controller.product;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kt.common.ApiResult;
+import com.kt.common.response.ApiResult;
+import com.kt.common.support.SwaggerAssistance;
 import com.kt.dto.product.ProductRequest;
 import com.kt.dto.product.ProductResponse;
 import com.kt.service.product.ProductService;
@@ -23,7 +24,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/api/products")
 @RequiredArgsConstructor
-public class ProductController extends SwaggerAssistance{
+public class ProductController extends SwaggerAssistance {
 	private final ProductService service;
 
 	@GetMapping

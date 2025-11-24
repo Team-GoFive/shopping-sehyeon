@@ -2,7 +2,7 @@ package com.kt.dto.user;
 
 import java.time.LocalDate;
 
-import com.kt.domain.Gender;
+import com.kt.domain.user.Gender;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
@@ -32,7 +32,8 @@ public class UserRequest {
 		Gender gender,
 		@NotNull
 		LocalDate birthday
-	){}
+	) {
+	}
 
 	@Schema(name = "UserRequest.PasswordUpdate", description = "비밀번호 변경 요청")
 	public record PasswordUpdate(
@@ -42,7 +43,8 @@ public class UserRequest {
 		@NotBlank
 		@Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")
 		String newPassword
-	){}
+	) {
+	}
 
 	@Schema(name = "UserRequest.Update", description = "회원 정보 수정 요청")
 	public record Update(
@@ -52,5 +54,6 @@ public class UserRequest {
 		String mobile,
 		@NotBlank
 		String email
-	){}
+	) {
+	}
 }

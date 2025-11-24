@@ -6,9 +6,9 @@ import java.util.List;
 
 import org.springframework.util.StringUtils;
 
-import com.kt.common.BaseEntity;
-import com.kt.common.ErrorCode;
-import com.kt.common.PreConditions;
+import com.kt.common.support.BaseEntity;
+import com.kt.common.exception.ErrorCode;
+import com.kt.common.support.PreConditions;
 import com.kt.domain.orderprodut.OrderProduct;
 
 import jakarta.persistence.Entity;

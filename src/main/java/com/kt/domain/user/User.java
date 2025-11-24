@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.kt.domain.Gender;
 import com.kt.domain.order.Order;
 
 import jakarta.persistence.Entity;
