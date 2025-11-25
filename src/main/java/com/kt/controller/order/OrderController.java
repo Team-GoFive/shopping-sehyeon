@@ -6,9 +6,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kt.aspect.logger.ShoppingLogger;
 import com.kt.common.response.ApiResult;
+import com.kt.domain.history.HistoryType;
 import com.kt.dto.order.OrderRequest;
-import com.kt.security.DefaultCurrentUser;
+import com.kt.security.CurrentUser;
 import com.kt.service.order.OrderService;
 
 import jakarta.validation.Valid;
@@ -22,15 +24,15 @@ public class OrderController {
 	private final OrderService orderService;
 
 	// 주문생성
-	// userId, action(주문생성), type(사용자, 관리자)
 	@PostMapping
+	@ShoppingLogger(type = HistoryType.ORDER_CREATE, content = "주문을 생성했습니다.")
 	public ApiResult<Void> create(
-		@AuthenticationPrincipal DefaultCurrentUser defaultCurrentUser,
+		@AuthenticationPrincipal CurrentUser currentUser,
 		@RequestBody @Valid OrderRequest.Create request
 	) {
 		// 주문 생성 로직 구현
 		orderService.create(
-			defaultCurrentUser.getId(),
+			currentUser.getId(),
 			request.productId(),
 			request.quantity(),
 			request.receiverName(),

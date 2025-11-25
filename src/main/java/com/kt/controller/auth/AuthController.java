@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kt.aspect.logger.ShoppingLogger;
 import com.kt.common.response.ApiResult;
+import com.kt.domain.history.HistoryType;
 import com.kt.dto.auth.LoginRequest;
 import com.kt.dto.auth.LoginResponse;
 import com.kt.service.auth.AuthService;
@@ -23,6 +25,7 @@ public class AuthController {
 
 	private final AuthService authService;
 
+	@ShoppingLogger(type = HistoryType.LOGIN, content = "사용자 로그인")
 	@PostMapping("/login")
 	@ResponseStatus(HttpStatus.OK)
 	public ApiResult<LoginResponse> login(@RequestBody @Valid LoginRequest request) {
