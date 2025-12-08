@@ -16,15 +16,14 @@ import com.kt.security.DefaultCurrentUser;
 public class JpaConfiguration {
 
 	@Bean
-	public AuditorAware<Long> auditorProvider() {
+	public AuditorAware<? extends Long> auditorProvider() {
 		return () -> {
 			SecurityContext context = SecurityContextHolder.getContext();
 			Object principal = context.getAuthentication().getPrincipal();
-			if (principal instanceof DefaultCurrentUser) {
-				Long id = ((DefaultCurrentUser)principal).getId();
-				System.out.println("Auditor id = " + id);
-			}
-			return Optional.of(2L);
+
+			return principal instanceof DefaultCurrentUser currentUser ?
+				Optional.of(currentUser.getId()) :
+				Optional.empty();
 		};
 	}
 }
