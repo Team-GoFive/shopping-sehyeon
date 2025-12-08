@@ -6,18 +6,15 @@ import org.springframework.boot.context.event.ApplicationStartedEvent;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
-import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import org.springframework.scheduling.annotation.EnableAsync;
 
 import com.kt.common.support.Message;
 
 import lombok.RequiredArgsConstructor;
 
-@EnableAsync
+// @EnableAsync
 @ConfigurationPropertiesScan
 @SpringBootApplication
 @RequiredArgsConstructor
-@EnableJpaAuditing
 public class ShoppingApplication {
 	private final ApplicationEventPublisher publisher;
 

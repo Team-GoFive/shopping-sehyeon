@@ -33,7 +33,7 @@ spring:
 
 jwt:
   secret: ${kt.jwt.secret:kt-cloud-shopping-kt-cloud-shopping-kt-cloud-shopping-kt-cloud-shopping}
-  access-token-expiration: ${kt.jwt.access-token-expiration:300000} #5분
+  access-token-expiration: ${kt.jwt.access-token-expiration:3000000} #5분
   refresh-token-expiration: ${kt.jwt.refresh-token-expiration:43200000} #12시간
 
 slack:
