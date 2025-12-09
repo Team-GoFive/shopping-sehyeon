@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
@@ -15,7 +14,7 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import lombok.RequiredArgsConstructor;
 
-@Configuration
+// @Configuration
 @OpenAPIDefinition(
 	info = @Info(
 		title = "테크업 쇼핑몰",
@@ -51,11 +50,13 @@ public class SwaggerConfiguration {
 		// local, default -> localhost:8080
 		// dev -> dev.ktechup.com
 		// prod -> ktechup.com
-		String profile = environment.getProperty("SPRING_PROFILES_ACTIVE");
+		String profile = environment.getActiveProfiles()[0];
 		switch (profile) {
 			case "local" -> profile = "localhost:8080";
+			case "test" -> profile = "localhost:8080";
 			case "dev" -> profile = "dev.ktechup.com";
 			case "prod" -> profile = "ktechup.com";
+			case null -> profile = "localhost:8080";
 			default -> profile = "localhost:8080";
 		}
 		return profile;

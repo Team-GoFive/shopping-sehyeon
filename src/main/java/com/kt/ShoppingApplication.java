@@ -7,8 +7,6 @@ import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.event.EventListener;
 
-import com.kt.common.support.Message;
-
 import lombok.RequiredArgsConstructor;
 
 // @EnableAsync
@@ -24,7 +22,7 @@ public class ShoppingApplication {
 
 	@EventListener(ApplicationStartedEvent.class)
 	public void started() {
-		publisher.publishEvent(new Message("Shopping Application Started"));
+		// publisher.publishEvent(new Message("Shopping Application Started"));
 	}
 
 }

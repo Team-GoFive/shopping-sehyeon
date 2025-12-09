@@ -3,7 +3,6 @@ package com.kt.integration.notify;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
-import com.kt.common.profile.AppProfile;
 import com.slack.api.methods.MethodsClient;
 
 import lombok.RequiredArgsConstructor;
@@ -11,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
-@AppProfile // prod, dev
+// @AppProfile // prod, dev
 @RequiredArgsConstructor
 public class AppNotifyApi implements NotifyApi {
 	private final MethodsClient methodsClient;
