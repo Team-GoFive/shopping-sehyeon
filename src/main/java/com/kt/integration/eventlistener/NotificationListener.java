@@ -1,14 +1,13 @@
 package com.kt.integration.eventlistener;
 
 import org.springframework.context.event.EventListener;
-import org.springframework.stereotype.Component;
 
 import com.kt.common.support.Message;
 import com.kt.integration.notify.NotifyApi;
 
 import lombok.RequiredArgsConstructor;
 
-@Component
+// @Component
 @RequiredArgsConstructor
 public class NotificationListener {
 	private final NotifyApi notifyApi;
