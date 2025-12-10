@@ -30,3 +30,11 @@ jwt:
 slack:
   bot-token: ${slack.token}
   log-channel: ${slack.channel}
+
+common:
+  common-value: this is common value
+  common-value-param: this is common value with param - ${COMMON_PARAM:공통}
+
+test:
+  my-value: this is test value in normal
+  my-value-param: this is test value with param - ${TEST_PARAM:terry}
