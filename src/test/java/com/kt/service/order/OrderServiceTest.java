@@ -3,8 +3,13 @@ package com.kt.service.order;
 import static org.assertj.core.api.Assertions.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Optional;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
 
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -75,74 +80,75 @@ class OrderServiceTest {
 		assertThat(foundOrder).isPresent();
 	}
 
-	// @Test
-	// void 동시에_100명_주문() throws Exception {
-	// 	var repeatCount = 500;
-	// 	var userList = new ArrayList<User>();
-	// 	for (int i = 0; i < repeatCount; i++) {
-	// 		userList.add(new User(
-	// 			"testuser-" + i,
-	// 			"password",
-	// 			"Test User-" + i,
-	// 			"email-" + i,
-	// 			"010-0000-000" + i,
-	// 			Gender.MALE,
-	// 			Role.USER,
-	// 			LocalDate.now()
-	// 		));
-	// 	}
-	//
-	// 	var users = userRepository.saveAll(userList);
-	//
-	// 	var product = productRepository.save(
-	// 		new Product(
-	// 			"테스트 상품명",
-	// 			100_000L,
-	// 			10L
-	// 		)
-	// 	);
-	//
-	// 	productRepository.flush();
-	//
-	// 	// 동시에 주문해야하니까 쓰레드를 100개
-	// 	var executorService = Executors.newFixedThreadPool(100);
-	// 	var countDownLatch = new CountDownLatch(repeatCount);
-	// 	AtomicInteger successCount = new AtomicInteger(0);
-	// 	AtomicInteger failureCount = new AtomicInteger(0);
-	//
-	// 	for (int i = 0; i < repeatCount; i++) {
-	// 		int finalI = i;
-	// 		executorService.submit(() -> {
-	// 			try {
-	// 				var targetUser = users.get(finalI);
-	// 				orderService.create(
-	// 					targetUser.getId(),
-	// 					product.getId(),
-	// 					1L,
-	// 					"수신자 주소-" + finalI,
-	// 					"010-1111-22" + finalI,
-	// 					targetUser.getName()
-	// 				);
-	// 				successCount.incrementAndGet();
-	// 			} catch (RuntimeException e) {
-	// 				e.printStackTrace();
-	// 				failureCount.incrementAndGet();
-	// 			} finally {
-	// 				countDownLatch.countDown();
-	// 			}
-	// 		});
-	// 	}
-	//
-	// 	countDownLatch.await();
-	// 	executorService.shutdown();
-	//
-	// 	var foundedProduct = productRepository.findByIdOrThrow(product.getId());
-	//
-	// 	// 1번쓰레드에서 작업하다가 언락
-	// 	// 2번쓰레드에서 작업하다가 언락
-	//
-	// 	// assertThat(successCount.get()).isEqualTo(10);
-	// 	// assertThat(failureCount.get()).isEqualTo(490);
-	// 	// assertThat(foundedProduct.getStock()).isEqualTo(0);
-	// }
+	@Test
+	@Disabled
+	void 동시에_100명_주문() throws Exception {
+		var repeatCount = 500;
+		var userList = new ArrayList<User>();
+		for (int i = 0; i < repeatCount; i++) {
+			userList.add(new User(
+				"testuser-" + i,
+				"password",
+				"Test User-" + i,
+				"email-" + i,
+				"010-0000-000" + i,
+				Gender.MALE,
+				Role.USER,
+				LocalDate.now()
+			));
+		}
+
+		var users = userRepository.saveAll(userList);
+
+		var product = productRepository.save(
+			new Product(
+				"테스트 상품명",
+				100_000L,
+				10L
+			)
+		);
+
+		productRepository.flush();
+
+		// 동시에 주문해야하니까 쓰레드를 100개
+		var executorService = Executors.newFixedThreadPool(100);
+		var countDownLatch = new CountDownLatch(repeatCount);
+		AtomicInteger successCount = new AtomicInteger(0);
+		AtomicInteger failureCount = new AtomicInteger(0);
+
+		for (int i = 0; i < repeatCount; i++) {
+			int finalI = i;
+			executorService.submit(() -> {
+				try {
+					var targetUser = users.get(finalI);
+					orderService.create(
+						targetUser.getId(),
+						product.getId(),
+						1L,
+						"수신자 주소-" + finalI,
+						"010-1111-22" + finalI,
+						targetUser.getName()
+					);
+					successCount.incrementAndGet();
+				} catch (RuntimeException e) {
+					e.printStackTrace();
+					failureCount.incrementAndGet();
+				} finally {
+					countDownLatch.countDown();
+				}
+			});
+		}
+
+		countDownLatch.await();
+		executorService.shutdown();
+
+		var foundedProduct = productRepository.findByIdOrThrow(product.getId());
+
+		// 1번쓰레드에서 작업하다가 언락
+		// 2번쓰레드에서 작업하다가 언락
+
+		// assertThat(successCount.get()).isEqualTo(10);
+		// assertThat(failureCount.get()).isEqualTo(490);
+		// assertThat(foundedProduct.getStock()).isEqualTo(0);
+	}
 }
