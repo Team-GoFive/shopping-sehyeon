@@ -3,6 +3,7 @@ on: pull_request
 
 env:
   DB_PASSWORD: root
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
 
 jobs:
   pr-test:
@@ -38,6 +39,14 @@ jobs:
         with:
           gradle-version: wrapper
           arguments: test
+
+      - name: send slack notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          fields: repo,commit,author,ref,workflow,job,took
+          author_name: GitHub Actions
+        if: always()
 
 
 
