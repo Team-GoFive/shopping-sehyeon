@@ -3,9 +3,11 @@ package com.kt.domain.product;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.kt.common.exception.CustomException;
 
+@ActiveProfiles("test")
 class ProductTest {
 
 	@Test
