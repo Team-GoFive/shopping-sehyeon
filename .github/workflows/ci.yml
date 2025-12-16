@@ -20,7 +20,7 @@ jobs:
       - name: Start Mysql Service
         run: |
           sudo /etc/init.d/mysql start
-          mysql -e 'CREATE DATABASE shoppingtest;' -uroot -proot
+          mysql -e 'CREATE DATABASE shopping-sehyeon;' -uroot -proot
 
       - name: Set up JDK 21
         uses: actions/setup-java@main
