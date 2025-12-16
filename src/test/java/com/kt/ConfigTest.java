@@ -13,7 +13,7 @@ import com.kt.config.TestProperties;
 public class ConfigTest {
 
 	@Autowired
-	CommonProperties commonProperties;
+	CommonProperties commonProperties
 
 	@Autowired
 	TestProperties testProperties;
