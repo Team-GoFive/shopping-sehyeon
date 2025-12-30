@@ -1,5 +1,8 @@
 package com.kt;
 
+import static org.assertj.core.api.Assertions.*;
+
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,7 +16,7 @@ import com.kt.config.TestProperties;
 public class ConfigTest {
 
 	@Autowired
-	CommonProperties commonProperties
+	CommonProperties commonProperties;
 
 	@Autowired
 	TestProperties testProperties;
@@ -26,5 +29,12 @@ public class ConfigTest {
 
 		System.out.println(testProperties.myValue());
 		System.out.println(testProperties.myValueParam());
+	}
+
+	@Test
+	@Tag("authEmail")
+	public void test2() {
+		// 실패하는 테스트
+		assertThat(true).isEqualTo(false);
 	}
 }

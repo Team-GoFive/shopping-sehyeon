@@ -80,3 +80,13 @@ tasks.register("zip", Zip.class) {
     from(".ebextensions") { into(".ebextensions") }
     from("procfiles/Procfile") { into("") }
 }
+
+test {
+    useJUnitPlatform {
+        if (System.getenv('CI') == 'true') {
+            excludeTags 'authEmail'
+        }
+        // 로컬에서는 모든 태그 포함 (기본값)
+        // 로컬에서는 모든 태그 포함 (기본값)
+    }
+}
